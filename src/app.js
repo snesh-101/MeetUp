@@ -8,7 +8,8 @@ app.get("/user", userAuth, (req, res)=>{
 app.get("/admin/getAllData", (req, res, next)=>{
    res.send("data sent");
 })
-app.delete("/admin/deleteData", (req, res)=>{
-   res.send("data deletedd");
+
+app.use("/", (err, req, res, next)=>{
+   res.status(500).send("OOPS! Something went wrong");
 })
 app.listen(3000, ()=>{console.log("app is running on port 3000")});
