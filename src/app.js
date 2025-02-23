@@ -1,20 +1,61 @@
 const express= require("express");
+const bcrypt = require("bcryptjs");
+const validator=require("validator");
 const app=express();
 const connectDB=require("./config/db.js")
-app.use(express.json());
-const User =require("./models/user.js")
-   app.post("/signup", async (req, res)=>{
-      const user=new User(req.body)
-      try {
-         await user.save(); 
-         res.send("user added successfully")
+   const {validateSignUpData}=require("./utils/validation.js")
+   app.use(express.json());
+   const User =require("./models/user.js")
+    app.post("/signup", async (req, res)=>{
+         
+         try {
+            validateSignUpData(req);
+            const {password, firstName, lastName, emailId}=req.body;
+            passwordHash=await bcrypt.hash(password, 10);
+            console.log(passwordHash);
+            const user=new User({
+               firstName,
+               lastName,
+               emailId,
+               password:passwordHash,
+            })
+            await user.save(); 
+            res.send("user added successfully")
+         }
+         catch(err){
+            console.error("Error adding the user:", err); // Log the full error in console
+            res.status(400).json({ error: err.message });
+            //res.status(400).send("error adding the user", err)
+         }
+      })
+app.get("/login",async (req, res)=>{
+   try{
+      const {emailId, password}=req.body;
+      if(!validator.isEmail(emailId))
+      {
+         throw new Error("email is not valid");
       }
-      catch(err){
-         console.error("Error adding the user:", err); // Log the full error in console
-         res.status(400).json({ error: err.message });
-         //res.status(400).send("error adding the user", err)
+      const user=await User.findOne({emailId});
+      if(!user)
+      {
+         throw new Error("invalid credentials");
       }
-   })
+      const isPassword=bcrypt.compare(password, user.password);
+      if(isPassword)
+      {
+         res.send("logged in successfully");
+      }
+      else
+      {
+         throw new Error("invalid credentials");
+      }
+   }
+   catch(err){
+      console.error("Error loggin in the user:", err); // Log the full error in console
+      res.status(400).json({ error: err.message });
+   }
+   
+})
 app.get("/user", async (req, res)=>{
    
    try{

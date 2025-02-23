@@ -33,15 +33,13 @@ const userSchema= new mongoose.Schema({
         type:Number,
         min:18,
     },
-    gender:{
+    gender: {
         type: String,
-        validate(value){
-            if(!["male", "female","others"].includes(value))
-            {
-                throw new Error("gender data is not valid");
-            }
+        validate: {
+            validator: (gender) => ["male", "female", "others"].includes(gender),
+            message: "Gender data is not valid"
         }
-    },
+    },    
     photoUrl:{
         type:String,
         default:"https://i.pinimg.com/736x/98/1d/6b/981d6b2e0ccb5e968a0618c8d47671da.jpg",
