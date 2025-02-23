@@ -10,7 +10,9 @@ const User =require("./models/user.js")
          res.send("user added successfully")
       }
       catch(err){
-         res.status(400).send("error adding the user")
+         console.error("Error adding the user:", err); // Log the full error in console
+         res.status(400).json({ error: err.message });
+         //res.status(400).send("error adding the user", err)
       }
    })
 app.get("/user", async (req, res)=>{
@@ -53,16 +55,27 @@ app.delete("/user", async (req, res)=>{
       res.status(400).send("something went wrong");
    }
 })
-app.patch("/user", async (req, res)=>{
-   const email=req.body.email;
+app.patch("/user/:id", async (req, res)=>{
+   const id=req.params?.id;
    const data=req.body;
+   
    try{
-    await  User.findOneAndUpdate({emailId:email}, data);
+      const ALLOWED_UPATES=[
+         "photoUrl", "gender", "age", "about", "skills"
+      ]
+      const isUpdateAllowed = Object.keys(data).every((k)=>
+      ALLOWED_UPATES.includes(k));
+      if(!isUpdateAllowed){
+         throw new Error("Update is not allowed");
+      }
+    await  User.findOneAndUpdate({_id:id}, data,{
+      runValidators:true
+    });
       res.send("user updated successfully");
    }
    catch(err)
    {
-      res.status(400).send("something went wrong");
+      res.status(400).json("something went wrong : "+ err.message);
    }
    
 })
