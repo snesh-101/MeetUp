@@ -1,10 +1,15 @@
 const express= require("express");
 const bcrypt = require("bcryptjs");
 const validator=require("validator");
+const jwt=require("jsonwebtoken");
+const cookieParser=require("cookie-parser");
 const app=express();
+app.use(express.json());
+app.use(cookieParser());
 const connectDB=require("./config/db.js")
    const {validateSignUpData}=require("./utils/validation.js")
-   app.use(express.json());
+const {userAuth}=require("./middlewares/auth.js")
+  
    const User =require("./models/user.js")
     app.post("/signup", async (req, res)=>{
          
@@ -43,12 +48,28 @@ app.get("/login",async (req, res)=>{
       const isPassword=bcrypt.compare(password, user.password);
       if(isPassword)
       {
+         const token=await jwt.sign({_id: user._id}, "randomasstoken33")
+         res.cookie("token", token);
          res.send("logged in successfully");
       }
       else
       {
          throw new Error("invalid credentials");
       }
+   }
+   catch(err){
+      console.error("Error loggin in the user:", err); // Log the full error in console
+      res.status(400).json({ error: err.message });
+   }
+   
+})
+app.get("/profile",userAuth, async (req, res)=>{
+   try
+   {
+     const user=req.user;
+     res.send(user);
+    // console.log(req.signedCookies)
+    // res.send("cookieee");
    }
    catch(err){
       console.error("Error loggin in the user:", err); // Log the full error in console
