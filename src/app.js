@@ -1,82 +1,26 @@
 const express= require("express");
 const bcrypt = require("bcryptjs");
-const validator=require("validator");
+
 const jwt=require("jsonwebtoken");
 const cookieParser=require("cookie-parser");
 const app=express();
 app.use(express.json());
 app.use(cookieParser());
 const connectDB=require("./config/db.js")
-   const {validateSignUpData}=require("./utils/validation.js")
-const {userAuth}=require("./middlewares/auth.js")
-  
-   const User =require("./models/user.js")
-    app.post("/signup", async (req, res)=>{
-         
-         try {
-            validateSignUpData(req);
-            const {password, firstName, lastName, emailId}=req.body;
-            passwordHash=await bcrypt.hash(password, 10);
-            console.log(passwordHash);
-            const user=new User({
-               firstName,
-               lastName,
-               emailId,
-               password:passwordHash,
-            })
-            await user.save(); 
-            res.send("user added successfully")
-         }
-         catch(err){
-            console.error("Error adding the user:", err); // Log the full error in console
-            res.status(400).json({ error: err.message });
-            //res.status(400).send("error adding the user", err)
-         }
-      })
-app.get("/login",async (req, res)=>{
-   try{
-      const {emailId, password}=req.body;
-      if(!validator.isEmail(emailId))
-      {
-         throw new Error("email is not valid");
-      }
-      const user=await User.findOne({emailId});
-      if(!user)
-      {
-         throw new Error("invalid credentials");
-      }
-      const isPassword=bcrypt.compare(password, user.password);
-      if(isPassword)
-      {
-         const token=await jwt.sign({_id: user._id}, "randomasstoken33")
-         res.cookie("token", token);
-         res.send("logged in successfully");
-      }
-      else
-      {
-         throw new Error("invalid credentials");
-      }
-   }
-   catch(err){
-      console.error("Error loggin in the user:", err); // Log the full error in console
-      res.status(400).json({ error: err.message });
-   }
-   
-})
-app.get("/profile",userAuth, async (req, res)=>{
-   try
-   {
-     const user=req.user;
-     res.send(user);
-    // console.log(req.signedCookies)
-    // res.send("cookieee");
-   }
-   catch(err){
-      console.error("Error loggin in the user:", err); // Log the full error in console
-      res.status(400).json({ error: err.message });
-   }
-   
-})
+
+
+
+const User =require("./models/user.js")
+    
+const authRouter=require("./routes/auth.js")
+const profileRouter=require("./routes/profile.js")
+const requestRouter=require("./routes/requests.js")
+
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
+
+
 app.get("/user", async (req, res)=>{
    
    try{
@@ -150,4 +94,4 @@ connectDB().then(
    }
 ).catch((err)=>{
    console.error("database couldn't be connected")
-})
+}) 
