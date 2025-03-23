@@ -5,9 +5,9 @@ const User =require("../models/user.js")
 profileRouter.get("/profile/view", userAuth, async (req, res)=>{
     try
     {
-      console.log("je");
+    //  console.log("je");
       const user=req.user;
-      console.log(user)
+    //  console.log(user)
       res.send(user);
      // console.log(req.signedCookies)
    

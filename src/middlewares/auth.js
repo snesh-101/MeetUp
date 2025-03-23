@@ -6,7 +6,7 @@ const userAuth = async (req, res, next) => {
         // Retrieve token from cookies or Authorization header
         let token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
-        console.log("Received Token:", token);
+     //   console.log("Received Token:", token);
 
         if (!token) {
             console.error("Token is missing");
