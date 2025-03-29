@@ -15,7 +15,7 @@ const userAuth = async (req, res, next) => {
 
         // Verify the token
         const decodedObj = jwt.verify(token, process.env.JWT_SECRET);
-      //  console.log("Decoded JWT:", decodedObj);
+       //  console.log("Decoded JWT:", decodedObj);
 
         const { _id } = decodedObj;
         const user = await User.findById(_id);
