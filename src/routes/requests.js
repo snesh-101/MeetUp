@@ -61,7 +61,7 @@ requestRouter.post("/request/:status/:toUserId", userAuth,async(req, res)=>{
     
         const connectionRequest= await ConnectionRequest.findOne({_id:requestId,
         toUserId:loggedInUser._id,
-    status:"interested"});
+        status:"interested"});
        if(!connectionRequest){
         return res.status(400).send("connection request not found");
        }
