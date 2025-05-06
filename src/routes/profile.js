@@ -26,12 +26,23 @@ profileRouter.get("/profile/view", userAuth, async (req, res)=>{
 //  })
  profileRouter.patch("/profile/edit", userAuth, async (req, res)=>{
    try{
-      if(!validateEditProfileData){
-         res.status(400).send("invalid edit req")
-      }
+      // if(!(["male", "female", "others"].includes(loggedInUser?.gender?.toLowerCase())))
+      // return res.send("invalid gender");
+
+      // if(!validateEditProfileData(req.body)){
+      //    res.status(400).send("invalid edit req")
+      // }
+      const gender = req.body.gender;
+      if (gender && !["male", "female", "others"].includes(gender.toLowerCase())) {
+        return res.status(400).send("Invalid gender");
+      }  
     
       const loggedInUser=req.user;
-      console.log(loggedInUser)
+      //console.log(loggedInUser)
+      if(!(["male", "female", "others"].includes(loggedInUser?.gender?.toLowerCase())))
+      return res.send("invalid gender");
+
+   
       Object.keys(req.body).forEach((key)=>{
          loggedInUser[key]=req.body[key];
       })

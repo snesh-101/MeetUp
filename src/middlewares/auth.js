@@ -9,8 +9,8 @@ const userAuth = async (req, res, next) => {
      //   console.log("Received Token:", token);
 
         if (!token) {
-            console.error("Token is missing");
-            return res.status(401).json({ error: "Authentication token is required" });
+            
+            return res.status(401).send("please log in");
         }
 
         // Verify the token
