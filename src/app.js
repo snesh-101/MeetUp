@@ -430,6 +430,7 @@ connectDB().then(
          console.log("- GET /room-info/:roomId")
          console.log("- POST /end-room")
          console.log("- GET /health")
+         //wejr
       });
    }
 ).catch((err)=>{
