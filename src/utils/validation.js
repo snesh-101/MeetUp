@@ -7,10 +7,10 @@ const validateSignUpData=(req)=>{
     else if(!validator.isEmail(emailId)){
         throw new Error("email is not valid");
     }
-    else if(!validator.isStrongPassword(password))
-    {
-        throw new Error("please enter a strong password");
-    }
+    // else if(!validator.isStrongPassword(password))
+    // {
+    //     throw new Error("please enter a strong password");
+    // }
 };
 const validateEditProfileData=(req)=>{
     const allowedFields=["firstName", "lastName", "emailId", "photoUrl", "gender", "about", "skills", "age"]

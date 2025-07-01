@@ -26,10 +26,10 @@ const userSchema= new mongoose.Schema({
     password:{
         type: String,
         required:true,
-        validate:{
-            validator:(password)=>{return validator.isStrongPassword(password)},
-            message:(props)=>{return `password is not strong enough ${props.value}`}
-        }
+        // validate:{
+        //     validator:(password)=>{return validator.isStrongPassword(password)},
+        //     message:(props)=>{return `password is not strong enough ${props.value}`}
+        // }
     },
     age:{
         type:Number,
