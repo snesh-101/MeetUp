@@ -420,18 +420,11 @@ app.use((error, req, res, next) => {
 connectDB().then(
    ()=>{
       console.log("database connected successfully")
-      server.listen(3000, ()=>{
-         console.log("server running on port 3000")
-         console.log("VideoSDK endpoints available:")
-         console.log("- POST /get-token")
-         console.log("- POST /validate-token") 
-         console.log("- POST /create-room")
-         console.log("- POST /validate-room")
-         console.log("- GET /room-info/:roomId")
-         console.log("- POST /end-room")
-         console.log("- GET /health")
-         //wejr
-      });
+      const PORT = process.env.PORT || 3000;
+  server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
    }
 ).catch((err)=>{
    console.error("database couldn't be connected")
