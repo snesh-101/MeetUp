@@ -27,13 +27,12 @@ profileRouter.get("/profile/view", userAuth, async (req, res)=>{
 profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
    try {
      const loggedInUser = req.user;
+ 
      if (!loggedInUser) {
        return res.status(401).json({ error: "User not authenticated" });
      }
  
-     const { gender } = req.body;
- 
-     // ✅ Validate gender if present
+     const gender = req.body.gender;
      if (gender && !["male", "female", "others"].includes(gender.toLowerCase())) {
        return res.status(400).send("Invalid gender");
      }
@@ -45,13 +44,14 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
      await loggedInUser.save();
  
      res.json({
-       message: `${loggedInUser.firstName || "User"}, your profile was updated successfully`,
+       message: `${loggedInUser.firstName} your profile was updated successfully`,
        data: loggedInUser,
      });
    } catch (err) {
      console.error("Error editing the profile:", err.message);
-     res.status(500).json({ error: "Internal server error" });
+     res.status(500).json({ error: "Internal Server Error" });
    }
  });
+ 
  
  module.exports=profileRouter;

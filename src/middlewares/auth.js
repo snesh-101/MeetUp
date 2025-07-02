@@ -2,40 +2,34 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.js");
 
 const userAuth = async (req, res, next) => {
-    try {
-        // Retrieve token from cookies or Authorization header
-        let token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+  try {
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
-     //   console.log("Received Token:", token);
-
-        if (!token) {
-            
-            return res.status(401).send("please log in");
-        }
-
-        // Verify the token
-        const decodedObj = jwt.verify(token, process.env.JWT_SECRET);
-       //  console.log("Decoded JWT:", decodedObj);
-
-        const { _id } = decodedObj;
-        const user = await User.findById(_id);
-
-        if (!user) {
-            console.error("User not found in database");
-            return res.status(404).json({ error: "User not found" });
-        }
-
-        req.user = user;
-        next();
-    } catch (err) {
-        console.error("Error logging in user:", err.message);
-
-        let statusCode = 400;
-        if (err.name === "JsonWebTokenError") statusCode = 401; // Invalid token
-        if (err.name === "TokenExpiredError") statusCode = 403; // Expired token
-
-        res.status(statusCode).json({ error: err.message });
+    if (!token) {
+      return res.status(401).json({ error: "Please log in" });
     }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // ✅ Use _id because your token signs with {_id: this._id}
+    const user = await User.findById(decoded._id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    req.user = user;
+    next();
+  } catch (err) {
+    console.error("Auth Middleware Error:", err.message);
+
+    const statusCode =
+      err.name === "JsonWebTokenError" ? 401 :
+      err.name === "TokenExpiredError" ? 403 :
+      400;
+
+    res.status(statusCode).json({ error: err.message });
+  }
 };
 
 module.exports = { userAuth };
