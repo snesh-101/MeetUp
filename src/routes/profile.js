@@ -24,39 +24,34 @@ profileRouter.get("/profile/view", userAuth, async (req, res)=>{
 //  profileRouter.patch("/profile/password", async (req, res)=>{
 
 //  })
- profileRouter.patch("/profile/edit", userAuth, async (req, res)=>{
-   try{
-      // if(!(["male", "female", "others"].includes(loggedInUser?.gender?.toLowerCase())))
-      // return res.send("invalid gender");
-
-      // if(!validateEditProfileData(req.body)){
-      //    res.status(400).send("invalid edit req")
-      // }
-      const gender = req.body.gender;
-      if (gender && !["male", "female", "others"].includes(gender.toLowerCase())) {
-        return res.status(400).send("Invalid gender");
-      }  
-    
-      const loggedInUser=req.user;
-      //console.log(loggedInUser)
-      if(!(["male", "female", "others"].includes(loggedInUser?.gender?.toLowerCase())))
-      return res.send("invalid gender");
-
-   
-      Object.keys(req.body).forEach((key)=>{
-         loggedInUser[key]=req.body[key];
-      })
+profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
+   try {
+     const loggedInUser = req.user;
+     if (!loggedInUser) {
+       return res.status(401).json({ error: "User not authenticated" });
+     }
+ 
+     const { gender } = req.body;
+ 
+     // ✅ Validate gender if present
+     if (gender && !["male", "female", "others"].includes(gender.toLowerCase())) {
+       return res.status(400).send("Invalid gender");
+     }
+ 
+     Object.keys(req.body).forEach((key) => {
+       loggedInUser[key] = req.body[key];
+     });
+ 
      await loggedInUser.save();
-     console.log(loggedInUser)
-      // res.send("profile updated successfully")
-      res.json({
-         message:`${loggedInUser.firstName} your profile was updated successfully`,
-         data:loggedInUser
-
-      })
+ 
+     res.json({
+       message: `${loggedInUser.firstName || "User"}, your profile was updated successfully`,
+       data: loggedInUser,
+     });
+   } catch (err) {
+     console.error("Error editing the profile:", err.message);
+     res.status(500).json({ error: "Internal server error" });
    }
-   catch (err) {
-      console.error("Error editing the profile:", err.message)}  
-
- })
+ });
+ 
  module.exports=profileRouter;

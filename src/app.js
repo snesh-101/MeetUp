@@ -15,6 +15,11 @@ app.use(cors({
    credentials:true,
    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT']
 }));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
 app.use(express.json());
 app.use(cookieParser());
 
