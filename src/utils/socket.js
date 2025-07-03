@@ -13,9 +13,14 @@ const getSecretRoomId = (userId, targetUserId) => {
 const initializeSocket = (server) => {
   const io = socket(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: [
+        "http://localhost:5173",
+        "https://meetup-frontend-y5rn.onrender.com"
+      ],
+      credentials: true,
     },
   });
+  
 
   io.on("connection", (socket) => {
     socket.on("joinChat", ({ firstName, userId, targetUserId }) => {
