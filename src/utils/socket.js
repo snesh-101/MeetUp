@@ -12,6 +12,7 @@ const getSecretRoomId = (userId, targetUserId) => {
 
 const initializeSocket = (server) => {
   const io = socket(server, {
+    path: "/api/socket.io", // ✅ This must match frontend config
     cors: {
       origin: [
         "http://localhost:5173",
