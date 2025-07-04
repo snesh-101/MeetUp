@@ -32,6 +32,9 @@ const requestRouter=require("./routes/requests.js");
 const userRouter = require("./routes/user.js");
 const initializeSocket = require("./utils/socket.js");
 
+app.get('/ping', (req, res) => {
+  res.send('pong');           // plain text, no JSON needed
+});
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
