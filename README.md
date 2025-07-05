@@ -22,30 +22,30 @@
 
 ## 🛠️ Tech Stack
 
-**Frontend:**
+### Frontend
 - React.js
 - Tailwind CSS + DaisyUI
 - Redux Toolkit
 
-**Backend:**
+### Backend
 - Node.js + Express.js
 - MongoDB + Mongoose
-- JWT for auth
-- VideoSDK for video calls
+- JWT for authentication
+- VideoSDK for video calling
 
 ---
 
-
 ## 📦 Setup Instructions
 
-# Backend
-npm install
-npm start
+### 🔧 Backend
 
-# Frontend
+-npm install
+-npm start
+
+### Frontend
 Repository- https://github.com/snesh-101/MeetUp-Frontend
 
-# 🧪 Want to try it live?
+### 🧪 Want to try it live?
 
 🔗 Hosted URL: https://meetup-frontend-y5rn.onrender.com
 
