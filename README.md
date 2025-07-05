@@ -4,37 +4,6 @@
 
 ---
 
-## 🚀 Features
-
-- 🧑‍🤝‍🧑 Connect with people who share similar interests or skills  
-- 🔐 JWT-based authentication system  
-- ✍️ Add and update your skills and bio  
-- 📨 Real-time instant messaging  
-- 🧭 Discover and search for new people  
-- 🖼️ Upload profile pictures and customize your profile  
-- 🎥 **One-on-one video calling**
-  - Start or join video rooms directly from chats or user profiles
-  - Toggle camera/mic, leave room anytime
-  - Secure and low-latency using [VideoSDK](https://www.videosdk.live/)  
-- ⚠️ Invalid room protection and smooth UX flow
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-- React.js
-- Tailwind CSS + DaisyUI
-- Redux Toolkit
-
-### Backend
-- Node.js + Express.js
-- MongoDB + Mongoose
-- JWT for authentication
-- VideoSDK for video calling
-
----
-
 ## 📦 Setup Instructions
 
 ### 🔧 Backend
