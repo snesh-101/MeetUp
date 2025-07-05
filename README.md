@@ -45,7 +45,7 @@ npm start
 # Frontend
 Repository- https://github.com/snesh-101/MeetUp-Frontend
 
-#🧪 Want to try it live?
+# 🧪 Want to try it live?
 
 🔗 Hosted URL: https://meetup-frontend-y5rn.onrender.com
 
